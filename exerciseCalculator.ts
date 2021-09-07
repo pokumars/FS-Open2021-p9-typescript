@@ -10,6 +10,28 @@ interface ExerciseResult  {
   ratingDescription: string
 };
 
+interface ExerciseArgument  {
+  target: number
+  results: Array<number>
+}
+
+
+const argumentParser = (args: Array<string>): ExerciseArgument => {
+  if (args.length < 4)  throw new Error("Not enough arguments");
+  const target = Number(args[2]);
+  const results = args.slice(3)
+  
+  if( results.findIndex(n => isNaN(Number(n))) === -1 && !isNaN(target)) {
+    console.log('results.findIndex(n => isNaN(Number(n)))', results.findIndex(n => isNaN(Number(n))))
+    return {
+      target: Number(target),
+      results: results.map(n => Number(n))
+    }
+  } else {
+    throw new Error("Some of the expected numbers were not numbers");
+    
+  }  
+}
 
 const calculateExercises = (dailyResults: Array<number>, target: number): ExerciseResult  => {
   const totalHours: number = dailyResults.reduce((accumulator, currentValue) => accumulator + currentValue);
@@ -42,10 +64,19 @@ const calculateExercises = (dailyResults: Array<number>, target: number): Exerci
     trainingDays: dailyResults.filter(d => d > 0).length,
     averageHoursTarget,
     averageExerciseTime,
-    success: averageHoursTarget > averageExerciseTime,
+    success: averageExerciseTime  > averageHoursTarget,
     rating: ratingMachine(target, averageExerciseTime),
     ratingDescription
   }
 }
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 6))
+//console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 6))
+
+try {
+  const { target, results} = argumentParser(process.argv)
+    
+  console.log(calculateExercises(results, target))
+} catch (e) {
+  console.log('Error, something bad happened, message: ', e.message);
+}
+
