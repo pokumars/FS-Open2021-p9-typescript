@@ -12,11 +12,11 @@ interface ExerciseResult  {
 
 
 const calculateExercises = (dailyResults: Array<number>, target: number): ExerciseResult  => {
-  const totalHours = dailyResults.reduce((accumulator, currentValue) => accumulator + currentValue);
-  const averageExerciseTime= totalHours/dailyResults.length;
-  const averageHoursTarget= target;
-  let ratingDescription = "";
-  let percentageSuccess = (averageExerciseTime/target)*100
+  const totalHours: number = dailyResults.reduce((accumulator, currentValue) => accumulator + currentValue);
+  const averageExerciseTime: number= totalHours/dailyResults.length;
+  const averageHoursTarget: number= target;
+  let ratingDescription:string = "";
+  let percentageSuccess: number = (averageExerciseTime/target)*100
 
 
   const ratingMachine = (whatYouAimedFor: number, whatYouAccomplished: number): AchievementRating => {
