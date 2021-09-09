@@ -1,4 +1,4 @@
-const calculateBmi = (height: number, mass: number): string => {
+export const calculateBmi = (height: number, mass: number): string => {
 
   const heightInMetres: number = height / 100
   const bmi = (mass / (Math.pow(heightInMetres, 2)))
@@ -12,6 +12,7 @@ const calculateBmi = (height: number, mass: number): string => {
   else if (bmi >= 30) {
     return `Obese. Your BMI result is ${bmi}.`;
   }
+  else return 'the given values dont make sense'
 }
 
 interface BmiParams {
@@ -19,7 +20,7 @@ interface BmiParams {
   mass: number
 }
 
-const parseArguments = (args: Array<string>): BmiParams => {
+export const parseArguments = (args: Array<string>): BmiParams => {
   if (args.length < 4) throw new Error("Not enough arguments");
   if (args.length < 4) throw new Error("Too many arguments");
 
