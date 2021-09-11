@@ -1,7 +1,7 @@
 export const calculateBmi = (height: number, mass: number): string => {
 
-  const heightInMetres: number = height / 100
-  const bmi = (mass / (Math.pow(heightInMetres, 2)))
+  const heightInMetres: number = height / 100;
+  const bmi = (mass / (Math.pow(heightInMetres, 2)));
 
   if (bmi < 25) {
     return `Healthy. Your BMI result is ${bmi}`;
@@ -12,8 +12,8 @@ export const calculateBmi = (height: number, mass: number): string => {
   else if (bmi >= 30) {
     return `Obese. Your BMI result is ${bmi}.`;
   }
-  else return 'the given values dont make sense'
-}
+  else return 'the given values dont make sense';
+};
 
 interface BmiParams {
   height: number
@@ -29,19 +29,19 @@ export const parseArguments = (args: Array<string>): BmiParams => {
     return {
       height: Number(args[2]),
       mass: Number(args[3])
-    }
+    };
   } else {
     throw new Error("Some of the expected numbers were not numbers");
 
   }
-}
+};
 
 
 
 try {
   const { mass, height } = parseArguments(process.argv);
 
-  console.log(calculateBmi(height, mass))
+  console.log(calculateBmi(height, mass));
 } catch (e) {
   console.log('Error, something bad happened, message: ', e.message);
 }
