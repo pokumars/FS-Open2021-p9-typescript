@@ -16,7 +16,7 @@ interface ExerciseArgument  {
 }
 
 
-const argumentParser = (args: Array<string>): ExerciseArgument => {
+export const argumentParser = (args: Array<string>): ExerciseArgument => {
   if (args.length < 4)  throw new Error("Not enough arguments");
   const target = Number(args[2]);
   const results = args.slice(3);
@@ -33,7 +33,7 @@ const argumentParser = (args: Array<string>): ExerciseArgument => {
   }  
 };
 
-const calculateExercises = (dailyResults: Array<number>, target: number): ExerciseResult  => {
+export const calculateExercises = (dailyResults: Array<number>, target: number): ExerciseResult  => {
   const totalHours: number = dailyResults.reduce((accumulator, currentValue) => accumulator + currentValue);
   const averageExerciseTime: number= totalHours/dailyResults.length;
   const averageHoursTarget: number= target;
@@ -77,6 +77,6 @@ try {
     
   console.log(calculateExercises(results, target));
 } catch (e) {
-  console.log('Error, something bad happened, message: ', e.message);
+  console.log('Error, something bad happened, message11: ', e.message);
 }
 

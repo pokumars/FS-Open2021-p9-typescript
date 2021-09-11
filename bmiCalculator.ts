@@ -22,7 +22,7 @@ interface BmiParams {
 
 export const parseArguments = (args: Array<string>): BmiParams => {
   if (args.length < 4) throw new Error("Not enough arguments");
-  if (args.length < 4) throw new Error("Too many arguments");
+  if (args.length > 4) throw new Error("Too many arguments");
 
   if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
 
@@ -37,11 +37,11 @@ export const parseArguments = (args: Array<string>): BmiParams => {
 };
 
 
-
+/*
 try {
   const { mass, height } = parseArguments(process.argv);
 
   console.log(calculateBmi(height, mass));
 } catch (e) {
   console.log('Error, something bad happened, message: ', e.message);
-}
+}*/
