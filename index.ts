@@ -44,7 +44,17 @@ app.post('/exerciseCalculator', (req, res) => {
     }
 
   } catch (error) {
-    res.json({ error: error.message });
+    const errorMessage = 'Error, something bad happened, message: ';
+    if (error instanceof Error) {
+      //Read this to understand whywe need the if clause
+      //https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-0.html#unknown-on-catch-clause-bindings
+      //https://stackoverflow.com/questions/60151181/object-is-of-type-unknown-typescript-generics
+      console.log(errorMessage, error.message);
+      res.json({ error: `${errorMessage} ${error.message}` });
+    } else {
+      res.json({ error: errorMessage});
+    }
+    
   }
 
 });
