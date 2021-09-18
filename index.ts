@@ -10,7 +10,7 @@ app.get('/ping', (_req, res) => {
   res.send('Patientor backend pongs back');
 });
 
-
+//
 const PORT = 3000;
 
 app.listen(PORT, () => {
