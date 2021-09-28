@@ -1,10 +1,13 @@
 import express from 'express';
-import diagnosisService from './services/diagnosisService';
+import cors from 'cors';
 import diagnosesRouter from './routers/diagnoses';
+import patientsRouter from './routers/patients';
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use('/api/diagnoses', diagnosesRouter);
+app.use('/api/patients', patientsRouter);
 
 
 app.get('/ping', (_req, res) => {
@@ -13,12 +16,6 @@ app.get('/ping', (_req, res) => {
   res.send('Patientor backend pongs back');
 });
 
-app.get('/api/diagnoses', (_req, res) => {
-  console.log('get all diagnoses');
-  res.send(diagnosisService.getDiagnoses());
-});
-
-//
 const PORT = 3001;
 
 app.listen(PORT, () => {
