@@ -13,6 +13,12 @@ export interface Patient {
   occupation: string
 }
 
+export enum Gender {
+  Male= "Male",
+  Female= "Female",
+  Other= "Other"
+}
+
 /*Utility types are so useful in typescript
 
 The Pick utility type allows us to choose which fields of an existing type we want to use.
@@ -29,3 +35,4 @@ we can also create a new type using the Pick or Omit utility types
 type NonSensitivePatient  = Omit<Patient, 'ssn'>
 */
 export type NonSensitivePatient  = Omit<Patient, 'ssn'>;
+export type NewPatient = Omit<Patient, 'id'>;

@@ -1,8 +1,8 @@
 import express from 'express';
 import patientsService from '../services/patientService';
-import { Patient } from '../types';
-import { v1 as uuid } from 'uuid';
+import { NewPatient } from '../types';
 import patientService from '../services/patientService';
+import utils from '../utils';
 
 const router = express.Router();
 
@@ -13,15 +13,17 @@ router.get('/', (_req, res) => {
 });
 
 router.post('/', (req, res) => {
-  const { name, dateOfBirth, ssn, gender, occupation } = req.body;
-  const id = uuid();
-
+  
   try {
-    const newPatient: Patient = { name, dateOfBirth, ssn, gender, occupation, id };
+    //create these parses 
+    const newPatient: NewPatient = utils.toNewPatient(req.body); 
+    console.log(newPatient);
 
     const addedPatient = patientService.addNewPatient(newPatient);
+    console.log(addedPatient);
     res.json(addedPatient);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     res.status(400).send(error.message);
   }
