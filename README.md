@@ -1,3 +1,7 @@
+ [Part 9d- React with types](https://fullstackopen.com/en/part9/react_with_types) exercises from the Helsinki university Full Stack open 2021
+ 
+ https://fullstackopen.com/en/
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
