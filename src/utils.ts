@@ -15,7 +15,8 @@ const toNewPatient = (object: any): NewPatient => {
     dateOfBirth: parseDate(object.dateOfBirth),
     ssn: parseSsn(object.ssn),
     gender: parseGender(object.gender),
-    occupation: parseOccupation(object.occupation)
+    occupation: parseOccupation(object.occupation),
+    entries: []
   };
   //console.log(newPatient);
   return newPatient;
@@ -64,7 +65,7 @@ const parseOccupation = (occupation: unknown): string => {
 };
 
 
-const isString = (text: unknown): text is string => {
+export const isString = (text: unknown): text is string => {
   //look up 'Type guards'  to understand what the 'parameterName is Type' means
   return typeof text === 'string' || text instanceof String;
 };

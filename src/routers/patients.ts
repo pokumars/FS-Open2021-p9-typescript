@@ -1,5 +1,4 @@
 import express from 'express';
-import patientsService from '../services/patientService';
 import { NewPatient } from '../types';
 import patientService from '../services/patientService';
 import utils from '../utils';
@@ -9,7 +8,20 @@ const router = express.Router();
 router.get('/', (_req, res) => {
   console.log('get all patients- inside router');
 
-  res.json(patientsService.getNonSensitivePatients());
+  res.json(patientService.getNonSensitivePatients());
+});
+
+router.get('/:id', (req, res) => {
+  try {
+    const { id } = req.params; 
+    const foundPatient = patientService.findPatientById(id);
+
+    foundPatient? res.json(foundPatient) : res.status(404).send("No patient of such id was found");
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    res.status(400).send(error.message || "Error in attempting to get a single patient");
+  }
 });
 
 router.post('/', (req, res) => {
