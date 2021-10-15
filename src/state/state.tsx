@@ -3,12 +3,15 @@ import { Patient } from "../types";
 
 import { Action } from "./reducer";
 
+//https://fullstackopen.com/en/part9/react_with_types#state-handling
 export type State = {
-  patients: { [id: string]: Patient };
+  patients: { [id: string]: Patient};
+  patientInfo: { [id: string] :Patient }
 };
 
 const initialState: State = {
-  patients: {}
+  patients: {},
+  patientInfo: {}
 };
 
 export const StateContext = createContext<[State, React.Dispatch<Action>]>([
