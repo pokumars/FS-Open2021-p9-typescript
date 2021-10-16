@@ -48,3 +48,33 @@ export const reducer = (state: State, action: Action): State => {
       return state;
   }
 };
+
+//Action Creators
+//https://redux.js.org/tutorials/fundamentals/part-7-standard-patterns#action-creators
+
+/**
+ * 
+ * @param {Patient} patient 
+ * @returns {Action} action to add the fetched patient's details to state so that it doesnt need to be fetched again.
+ */
+export const addToPatientInfoList = (patient: Patient): Action => {
+  return { type: "ADD_TO_PATIENT_INFO_LIST", payload: patient };
+};
+
+/**
+ * 
+ * @param {Patient} newPatient 
+ * @returns {Action} action to add a newly created patient
+ */
+export const addPatient = (newPatient: Patient): Action => {
+  return { type: "ADD_TO_PATIENT_INFO_LIST", payload: newPatient };
+};
+
+/**
+ * 
+ * @param {Patient[]} patientList 
+ * @returns {Action} action to add the array of Patients to state
+ */
+export const setPatientList =(patientList: Patient[]): Action => {
+  return { type: "SET_PATIENT_LIST", payload: patientList };
+};

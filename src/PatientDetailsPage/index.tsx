@@ -3,7 +3,7 @@ import React from 'react';
 import { useParams } from 'react-router';
 import {  Icon } from 'semantic-ui-react';
 import { apiBaseUrl } from '../constants';
-import { useStateValue } from '../state';
+import { addToPatientInfoList, useStateValue } from '../state';
 import { Patient } from '../types';
 
 interface PatientDetailsParams {
@@ -29,7 +29,7 @@ const PatientDetailsPage = () => {
         const patient = response.data;
         console.log(patient);
         //put patient in state
-        dispatch({ type: "ADD_TO_PATIENT_INFO_LIST", payload: patient });
+        dispatch(addToPatientInfoList(patient));
 
       } catch (error) {
         console.error(error);
