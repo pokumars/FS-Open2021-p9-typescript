@@ -29,15 +29,16 @@ router.post('/', (req, res) => {
   try {
     //create these parses 
     const newPatient: NewPatient = utils.toNewPatient(req.body); 
-    console.log(newPatient);
 
     const addedPatient = patientService.addNewPatient(newPatient);
     console.log(addedPatient);
     res.json(addedPatient);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    res.status(400).send(error.message);
+  } catch (e: any) {
+    console.error(e.message);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    res.status(400).send({error: e.message});
   }
 });
 
