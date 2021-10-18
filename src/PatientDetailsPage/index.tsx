@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import { useParams } from 'react-router';
-import {  Icon } from 'semantic-ui-react';
+import {  Divider, Icon } from 'semantic-ui-react';
 import { apiBaseUrl } from '../constants';
 import { addToPatientInfoList, useStateValue } from '../state';
 import { Patient } from '../types';
@@ -64,8 +64,22 @@ const PatientDetailsPage = () => {
           </span>
 
           <p>ssn: {currentPatient.ssn}</p>
-          <p>occupation {currentPatient.occupation}</p>
+          <p>occupation: {currentPatient.occupation}</p>
           <p>{currentPatient.dateOfBirth}</p>
+
+          <h3>Entries</h3>
+          {currentPatient.entries.map((entry) => {
+            return (
+              <div key={entry.id} >
+                <Divider horizontal >{entry.date}</Divider>
+                {entry.date}- {entry.description}
+                <ul>
+                  {entry.diagnosisCodes?.map(d => <li key={d} >{d}</li>)} 
+                </ul>
+                
+              </div>
+            );
+          })}
         </div> :
         <h1>Loading</h1>}
     </div>

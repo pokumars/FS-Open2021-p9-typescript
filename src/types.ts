@@ -10,6 +10,55 @@ export enum Gender {
   Other = "other"
 }
 
+export enum HealthCheckRating {
+  "Healthy" = 0,
+  "LowRisk" = 1,
+  "HighRisk" = 2,
+  "Critical" = 3,
+}
+
+interface Discharge {
+  date: string
+  criteria: string
+}
+
+interface SickLeave {
+  startDate: string;
+  endDate: string;
+}
+
+interface BaseEntry {
+  id: string;
+  description: string;
+  date: string;
+  specialist: string;
+  //we already have a Diagnosis type defined, we can refer to the code field of the Diagnosis type directly in case its type ever changes
+  //https://fullstackopen.com/en/part9/react_with_types#full-entries
+  diagnosisCodes?: Array<Diagnosis['code']>;
+}
+
+interface HealthCheckEntry extends BaseEntry {
+  type: "HealthCheck"
+  healthCheckRating: HealthCheckRating;
+}
+
+interface OccupationalHealthcareEntry extends BaseEntry {
+  type: "OccupationalHealthcare";
+  employerName: string;
+  sickLeave?: SickLeave
+}
+
+interface HospitalEntry  extends BaseEntry {
+  type: "Hospital";
+  discharge?: Discharge
+}
+
+//https://fullstackopen.com/en/part9/react_with_types#full-entries
+export type Entry = 
+| HospitalEntry
+| HealthCheckEntry 
+| OccupationalHealthcareEntry;
+
 export interface Patient {
   id: string;
   name: string;
@@ -17,4 +66,5 @@ export interface Patient {
   gender: Gender;
   ssn?: string;
   dateOfBirth?: string;
+  entries: Entry[]
 }
