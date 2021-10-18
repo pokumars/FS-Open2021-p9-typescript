@@ -27,7 +27,7 @@ export const findPatientById = (id: string): Patient |undefined => {
   }
   const returnedPatient = patients.find( p => p.id === id);
 
-  return returnedPatient? {...returnedPatient, entries: []}: undefined;
+  return returnedPatient? {...returnedPatient}: undefined;
 };
 
 export default {
