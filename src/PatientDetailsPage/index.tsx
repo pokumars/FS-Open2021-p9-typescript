@@ -43,13 +43,24 @@ const PatientDetailsPage = () => {
     
   }, [dispatch, currentPatient]);
 
+  const genderIcons = () => {
+    switch (currentPatient?.gender) {
+      case 'male': return 'mars';
+      case 'female': return 'venus'; 
+      case 'other': return 'other gender horizontal';  
+      default:
+        return 'mars';
+    } 
+  };
+ //{currentPatient.gender == 'male' ? 'mars' : 'venus'}
+
   return (
     <div>
       {currentPatient ?
         <div>
           <span style={{ display: 'flex', alignItems: 'center' }}>
             <h1 style={{ display: "inline", paddingRight: 10, margin: 0 }} >{currentPatient.name} </h1>
-            <div><Icon name={currentPatient.gender == 'male' ? 'mars' : 'venus'} size='large' /></div>
+            <div><Icon name={genderIcons()} size='large' /></div>
           </span>
 
           <p>ssn: {currentPatient.ssn}</p>
