@@ -13,7 +13,7 @@ const patients: Patient[] = [
         id: 'd811e46d-70b3-4d90-b090-4535c7cf8fb1',
         date: '2015-01-02',
         type: 'Hospital',
-        specialist: 'MD House',
+        specialist: 'Jonas Salk',
         diagnosisCodes: ['S62.5'],
         description:
           "Healing time appr. 2 weeks. patient doesn't remember how he got the injury.",
@@ -68,7 +68,7 @@ const patients: Patient[] = [
       {
         id: 'b4f4eca1-2aa7-4b13-9a18-4a5535c3c8da',
         date: '2019-10-20',
-        specialist: 'MD House',
+        specialist: 'Louis Pasteur',
         type: 'HealthCheck',
         description: 'Yearly control visit. Cholesterol levels back to normal.',
         healthCheckRating: 0,
@@ -76,7 +76,7 @@ const patients: Patient[] = [
       {
         id: 'fcd59fa6-c4b4-4fec-ac4d-df4fe1f85f62',
         date: '2019-09-10',
-        specialist: 'MD House',
+        specialist: 'Alexander Fleming',
         type: 'OccupationalHealthcare',
         employerName: 'FBI',
         description: 'Prescriptions renewed.',
@@ -84,7 +84,7 @@ const patients: Patient[] = [
       {
         id: '37be178f-a432-4ba4-aac2-f86810e36a15',
         date: '2018-10-05',
-        specialist: 'MD House',
+        specialist: 'Florence Nightingale',
         type: 'HealthCheck',
         description:
           'Yearly control visit. Due to high cholesterol levels recommended to eat more vegetables.',
