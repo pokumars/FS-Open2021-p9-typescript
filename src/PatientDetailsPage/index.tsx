@@ -1,10 +1,11 @@
 import axios from 'axios';
 import React from 'react';
 import { useParams } from 'react-router';
-import {  Divider, Icon } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 import { apiBaseUrl } from '../constants';
 import { addToPatientInfoList, useStateValue } from '../state';
 import { Patient } from '../types';
+import { EntryDetails } from './EntryDetails';
 
 interface PatientDetailsParams {
   id: string
@@ -53,6 +54,7 @@ const PatientDetailsPage = () => {
     } 
   };
  //{currentPatient.gender == 'male' ? 'mars' : 'venus'}
+ 
 
   return (
     <div>
@@ -70,14 +72,7 @@ const PatientDetailsPage = () => {
           <h3>Entries</h3>
           {currentPatient.entries.map((entry) => {
             return (
-              <div key={entry.id} >
-                <Divider horizontal >{entry.date}</Divider>
-                {entry.date}- {entry.description}
-                <ul>
-                  {entry.diagnosisCodes?.map(d => <li key={d} >{d}</li>)} 
-                </ul>
-                
-              </div>
+              <EntryDetails entry={entry} key={entry.id} />
             );
           })}
         </div> :
