@@ -1,7 +1,15 @@
 import React from 'react';
-import { Divider } from 'semantic-ui-react';
-import { HospitalEntryComponent } from '../Entries';
+import { HealthCheckEntryComponent, HospitalEntryComponent, OccupationalHealthEntryComponent } from '../Entries';
 import { Entry } from '../types';
+
+/**
+ * Helper function for exhaustive type checking
+ */
+ const assertNever = (value: never): never => {
+  throw new Error(
+    `Unhandled discriminated union member: ${JSON.stringify(value)}`
+  );
+};
 
 interface Props {
 entry :Entry
@@ -12,18 +20,14 @@ export const EntryDetails = ({entry}: Props) => {
     case "Hospital":
       
       return <HospitalEntryComponent entry={entry} />;
+    case "HealthCheck":
+    
+      return <HealthCheckEntryComponent entry={entry} />;
+    case "OccupationalHealthcare":
+      return <OccupationalHealthEntryComponent entry={entry}/>;
   
     default:
-      return (
-        <div  >
-        <Divider horizontal >{entry.date}</Divider>
-        {entry.date}- {entry.description}
-        <ul>
-          {entry.diagnosisCodes?.map(d => <li key={d} >{d}</li>)} 
-        </ul>
-        
-      </div>
-      );
+      return assertNever(entry);
   }
 
 };

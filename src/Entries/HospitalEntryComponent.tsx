@@ -1,5 +1,4 @@
 import React from 'react';
-//import { Card, Grid, Header, Icon, Segment } from 'semantic-ui-react';
 import { Card, Header, Icon } from 'semantic-ui-react';
 import { HospitalEntry } from '../types';
 
@@ -9,7 +8,7 @@ interface Props {
 
 export const HospitalEntryComponent = ({ entry }: Props) => {
   return (
-    <Card fluid  >
+    <Card fluid>
       <Card.Content>
         <Card.Header>{entry.date} <Icon name='hospital' size="big" /></Card.Header>
         <Card.Meta>Specialist: {entry.specialist}</Card.Meta>

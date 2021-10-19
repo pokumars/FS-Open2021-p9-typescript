@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import { useParams } from 'react-router';
-import { Icon } from 'semantic-ui-react';
+import { Icon, Segment } from 'semantic-ui-react';
 import { apiBaseUrl } from '../constants';
 import { addToPatientInfoList, useStateValue } from '../state';
 import { Patient } from '../types';
@@ -70,11 +70,11 @@ const PatientDetailsPage = () => {
           <p>{currentPatient.dateOfBirth}</p>
 
           <h3>Entries</h3>
-          {currentPatient.entries.map((entry) => {
+          {currentPatient.entries.length > 0 ? currentPatient.entries.map((entry) => {
             return (
               <EntryDetails entry={entry} key={entry.id} />
             );
-          })}
+          }): <Segment>The patient has not had any visits.</Segment>}
         </div> :
         <h1>Loading</h1>}
     </div>
