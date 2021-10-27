@@ -11,7 +11,7 @@ export enum HealthCheckRating {
   "Critical" = 3,
 }
 
-interface Discharge {
+export interface Discharge {
   date: string
   criteria: string
 }
@@ -31,28 +31,34 @@ interface BaseEntry {
   diagnosisCodes?: Array<Diagnosis['code']>;
 }
 
-interface HealthCheckEntry extends BaseEntry {
-  type: "HealthCheck"
+export enum EntryTypeNames {
+  HealthCheck ="HealthCheck",
+  OccupationalHealthcare ="OccupationalHealthcare",
+  Hospital= "Hospital"
+}
+
+export interface HealthCheckEntry extends BaseEntry {
+  type: EntryTypeNames.HealthCheck
   healthCheckRating: HealthCheckRating;
 }
 
-interface OccupationalHealthcareEntry extends BaseEntry {
-  type: "OccupationalHealthcare";
+export interface OccupationalHealthcareEntry extends BaseEntry {
+  type: EntryTypeNames.OccupationalHealthcare;
   employerName: string;
   sickLeave?: SickLeave
 }
 
-interface HospitalEntry  extends BaseEntry {
-  type: "Hospital";
+export interface HospitalEntry  extends BaseEntry {
+  type: EntryTypeNames.Hospital;
   discharge?: Discharge
 }
 
-/* refer to this link for more info on this
+//refer to this link for more info on this
 //https://fullstackopen.com/en/part9/react_with_types#full-entries
 // Define special omit for unions
 type UnionOmit <T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
 // Define Entry without the 'id' property
-type EntryWithoutId = UnionOmit<Entry, 'id'>;*/
+export type EntryWithoutId = UnionOmit<Entry, 'id'>;
 
 
 //https://fullstackopen.com/en/part9/react_with_types#full-entries
