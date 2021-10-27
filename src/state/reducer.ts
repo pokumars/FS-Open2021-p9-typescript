@@ -1,5 +1,5 @@
 import { State } from "./state";
-import { Patient } from "../types";
+import { Patient, Diagnosis } from "../types";
 
 export type Action =
   | {
@@ -13,7 +13,11 @@ export type Action =
   | {
       type: "ADD_PATIENT";
       payload: Patient;
-    };
+    }
+  | {
+    type: "ADD_DIAGNOSES";
+    payload: Diagnosis[];
+  };
 
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -44,6 +48,11 @@ export const reducer = (state: State, action: Action): State => {
           [action.payload.id]: action.payload
         }
       };
+    case "ADD_DIAGNOSES": 
+    return {
+      ...state,
+      diagnoses:[...action.payload]
+    };
     default:
       return state;
   }
@@ -77,4 +86,13 @@ export const addPatient = (newPatient: Patient): Action => {
  */
 export const setPatientList =(patientList: Patient[]): Action => {
   return { type: "SET_PATIENT_LIST", payload: patientList };
+};
+
+/**
+ * 
+ * @param {Diagnosis[]} diagnoses  
+ * @returns {Action} action to add the fetched diagnoses to state so that it doesnt need to be fetched again.
+ */
+ export const addToDiagnoses = (diagnoses: Diagnosis[]): Action => {
+  return { type: "ADD_DIAGNOSES", payload: diagnoses };
 };

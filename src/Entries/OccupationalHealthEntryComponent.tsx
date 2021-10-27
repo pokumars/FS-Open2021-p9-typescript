@@ -1,13 +1,16 @@
 import React from 'react';
 import { Card, Header, Icon } from 'semantic-ui-react';
-import { OccupationalHealthcareEntry } from '../types';
+import { OccupationalHealthcareEntry, Diagnosis } from '../types';
 
 
 interface Props {
-  entry: OccupationalHealthcareEntry
+  entry: OccupationalHealthcareEntry,
+  diagnosisDetails?: Diagnosis[]
 }
 
-export const OccupationalHealthEntryComponent = ({entry}: Props) => {
+export const OccupationalHealthEntryComponent = ({ entry, diagnosisDetails }: Props) => {
+
+  console.log('diagnosisDetails----', diagnosisDetails);
   return (
     <Card fluid  >
       <Card.Content>
@@ -15,14 +18,21 @@ export const OccupationalHealthEntryComponent = ({entry}: Props) => {
         <Card.Meta>Specialist: {entry.specialist}</Card.Meta>
         <Card.Description>
           <Header as='h4' > Description</Header>
-        {entry.description}
+          {entry.description}
         </Card.Description>
 
         {
-          entry.sickLeave && 
+          entry.sickLeave &&
           <Card.Description>
-          <b>sick leave from</b> {entry.sickLeave.startDate} to {entry.sickLeave.endDate} 
-          </Card.Description> 
+            <b>sick leave from</b> {entry.sickLeave.startDate} to {entry.sickLeave.endDate}
+          </Card.Description>
+        }
+        <Header as='h4' > Diagnoses</Header>
+        {
+          
+          diagnosisDetails && diagnosisDetails.map((d, index) => {
+            return <p key={`${d.code}${index}`} >{d.code}: {d.name}</p>;
+          })
         }
       </Card.Content>
     </Card>

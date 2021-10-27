@@ -3,8 +3,8 @@ import React from 'react';
 import { useParams } from 'react-router';
 import { Icon, Segment } from 'semantic-ui-react';
 import { apiBaseUrl } from '../constants';
-import { addToPatientInfoList, useStateValue } from '../state';
-import { Patient } from '../types';
+import {  addToPatientInfoList, useStateValue } from '../state';
+import {  Patient } from '../types';
 import { EntryDetails } from './EntryDetails';
 
 interface PatientDetailsParams {
@@ -13,18 +13,14 @@ interface PatientDetailsParams {
 
 const PatientDetailsPage = () => {
   const { id } = useParams<PatientDetailsParams>();
-  const [{ patientInfo }, dispatch] = useStateValue();
+  const [{ patientInfo, diagnoses }, dispatch] = useStateValue();
   const currentPatient = Object.values(patientInfo).find((p) => p.id == id);
 
 
   React.useEffect(() => {
     //check state for patient
-    //currentPatient = Object.values(patientInfo).find((p) => p.id == id);
-  
-
     //fetch the patient
     const fetchPatientInfo = async () => {
-
       try {
         const response = await axios.get<Patient>(apiBaseUrl + '/patients/' + id);
         const patient = response.data;
@@ -35,7 +31,6 @@ const PatientDetailsPage = () => {
       } catch (error) {
         console.error(error);
       }
-
     };
 
     if (!currentPatient || currentPatient ==undefined || currentPatient == null ) {
@@ -43,6 +38,31 @@ const PatientDetailsPage = () => {
     }
     
   }, [dispatch, currentPatient]);
+
+/*   React.useEffect(() => {
+    //check state for Diagnoses
+    console.log('fetching the diagnoses');
+    //fetch the Diagnoses
+    const fetchDiagnoses = async () => {
+      try {
+        const response = await axios.get<Diagnosis[]>(apiBaseUrl + '/diagnoses/');
+        const fetchedDiagnoses = response.data;
+        console.log(fetchedDiagnoses);
+        //put Diagnoses in state
+        dispatch(addToDiagnoses(fetchedDiagnoses));
+
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    if (!diagnoses || diagnoses.length < 1 || diagnoses == null ) {
+      void fetchDiagnoses();
+    }
+    
+  }, [dispatch]); */
+
+  console.log('diagnoses,---------', diagnoses);
 
   const genderIcons = () => {
     switch (currentPatient?.gender) {

@@ -1,13 +1,17 @@
 import React from 'react';
 import { Card, Header, Icon } from 'semantic-ui-react';
-import { HealthCheckEntry,  } from '../types';
+import { HealthCheckEntry, Diagnosis, } from '../types';
 import HealthRatingBar from "../components/HealthRatingBar";
 
 interface Props {
   entry: HealthCheckEntry
+  diagnosisDetails?: Diagnosis[]
 }
 
-export const HealthCheckEntryComponent = ({entry}: Props) => {
+export const HealthCheckEntryComponent = ({entry, diagnosisDetails}: Props) => {
+
+  console.log('diagnosisDetails----', diagnosisDetails);
+
   return (
     <Card fluid  >
       <Card.Content>
@@ -18,6 +22,12 @@ export const HealthCheckEntryComponent = ({entry}: Props) => {
         {entry.description}
         </Card.Description>
         <HealthRatingBar showText={false} rating={entry.healthCheckRating} />
+        <Header as='h4' > Diagnoses</Header>
+        {          
+          diagnosisDetails && diagnosisDetails.map((d, index) => {
+            return <p key={`${d.code}${index}`} >{d.code}: {d.name}</p>;
+          })
+        }
 
       </Card.Content>
     </Card>
