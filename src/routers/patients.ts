@@ -24,6 +24,26 @@ router.get('/:id', (req, res) => {
   }
 });
 
+router.post('/:id/entries', (req, res) => {
+
+  try {
+    const { id } =req.params;
+    console.log('raw new  entry', req.body);
+    const newEntry = utils.toNewEntry(req.body);
+
+    const updatedPatient= patientService.addNewEntryToPatient(newEntry, id);
+    //console.log(updatedPatient);
+    res.json(updatedPatient);    
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (e: any) {
+    console.log('e.message ', e.message);
+    //res.status(400).send({error: `${e.messsage}`, test: 'test'});
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    res.status(400).send({error: e.message});
+  }
+});
+
 router.post('/', (req, res) => {
   
   try {
@@ -41,5 +61,6 @@ router.post('/', (req, res) => {
     res.status(400).send({error: e.message});
   }
 });
+
 
 export default router;

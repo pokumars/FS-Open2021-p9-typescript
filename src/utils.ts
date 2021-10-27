@@ -1,12 +1,13 @@
 import diagnoses from "../data/diagnoses";
-import {  Discharge, EntryTypeNames, EntryWithoutId, Gender, HealthCheckEntry, HealthCheckRating, HospitalEntry, NewPatient, OccupationalHealthcareEntry } from "./types";
+import { Discharge, EntryTypeNames, EntryWithoutId, Gender, HealthCheckEntry,
+   HealthCheckRating, HospitalEntry, NewPatient, OccupationalHealthcareEntry } from "./types";
 
 
 /**
  * Parses req.object and makes sure that all passed values are of the right type or else throws an error with a message.
  * The errors are declared in the parsers of the individual fields so you wont fiond them directly in this functions
- * 
- * @param object the request.object 
+ *
+ * @param object the request.object
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const toNewPatient = (object: any): NewPatient => {
@@ -21,6 +22,22 @@ const toNewPatient = (object: any): NewPatient => {
   };
   //console.log(newPatient);
   return newPatient;
+};
+
+const toNewEntry = (object: EntryWithoutId): EntryWithoutId => {
+  switch (object.type) {
+    case "HealthCheck":
+      return toHealthCheckEntry(object);
+
+    case "Hospital":
+      return toHospitalEntry(object);
+    case "OccupationalHealthcare":
+      return toOccupationalHealthcareEntry(object);
+
+    default:
+      //console.log('the errored new entry - ',object);
+      throw new Error("This did not match any of the Entry types.");
+  }
 };
 
 const parseDate = (date: unknown): string => {
@@ -58,6 +75,7 @@ const isGender = (gndr: any): gndr is Gender => {
   return Object.values(Gender).includes(gndr);
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isHealthCheckRating = (rating: any): rating is HealthCheckRating => {
     //look up 'Type guards'  to understand what the 'parameterName is Type' means
   //https://www.typescriptlang.org/docs/handbook/advanced-types.html#using-type-predicates
@@ -94,6 +112,8 @@ const parseDiagnosisCodes = (codes: Array<unknown>): Array<string> =>{
 };
 
 
+
+
 /**
  * @param genericString The string being tested
  * @param nameOfValue the name of it so we can write it in error codes. e.g if nameOfValue is description, we can write 'incorrect or missing description' 
@@ -117,6 +137,7 @@ const parseDischarge = (date: unknown, criteria: unknown): Discharge => {
   return discharge;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const toHospitalEntry = (object: any):  Omit<HospitalEntry, 'id'> => {
   const newHospitalEntry = {
     description: parseGenericStringType(object.description, 'description'),
@@ -131,6 +152,7 @@ const toHospitalEntry = (object: any):  Omit<HospitalEntry, 'id'> => {
   return newHospitalEntry;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const toHealthCheckEntry = (object: any):  Omit<HealthCheckEntry, 'id'> => {
   const newHealthCheckEntry = {
     description: parseGenericStringType(object.description, 'description'),
@@ -144,6 +166,7 @@ const toHealthCheckEntry = (object: any):  Omit<HealthCheckEntry, 'id'> => {
   return newHealthCheckEntry;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const toOccupationalHealthcareEntry = (object: any):  Omit<OccupationalHealthcareEntry, 'id'> => {
   const newOccupationalHealthcareEntry = {
     description: parseGenericStringType(object.description, 'description'),
@@ -151,30 +174,21 @@ const toOccupationalHealthcareEntry = (object: any):  Omit<OccupationalHealthcar
     specialist: parseGenericStringType(object.specialist, 'specialist name'),
     diagnosisCodes:parseDiagnosisCodes(object.diagnosisCodes),
     type : "OccupationalHealthcare" as EntryTypeNames.OccupationalHealthcare,
-    healthCheckRating: parseHealthCheckRating(object.healthCheckRating),
     employerName: parseGenericStringType(object.employerName, 'employerName'),
+    
   };
+  if (object.sickLeave && typeof object === "object"&& object.sickLeave.startDate&& object.sickLeave.endDate) {
+    return{...newOccupationalHealthcareEntry, 
+      sickLeave :{
+        startDate: parseDate(object.sickLeave.startDate),
+        endDate: parseDate(object.sickLeave.endDate)
+      }};
+  } 
 
   return newOccupationalHealthcareEntry;
 };
 
-const toNewEntry = (object: EntryWithoutId): EntryWithoutId => {
 
-
-  switch (object.type) {
-    case "HealthCheck":
-      return toHealthCheckEntry(object);
-
-    case "Hospital":
-      return toHospitalEntry(object);
-    case "OccupationalHealthcare":
-      return toOccupationalHealthcareEntry(object);
-
-    default:
-      throw new Error("This did not match any of the Entry types.");
-    }
-
-};
 
 export default {
   toNewPatient, toNewEntry

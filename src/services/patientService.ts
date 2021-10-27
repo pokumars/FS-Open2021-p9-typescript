@@ -1,5 +1,5 @@
 import patients from "../../data/patients";
-import { NewPatient, PublicPatient, Patient } from "../types";
+import { NewPatient, PublicPatient, Patient, Entry, EntryWithoutId } from "../types";
 import { v1 as uuid } from 'uuid';
 import { isString } from "../utils";
 
@@ -20,6 +20,27 @@ const addNewPatient = (newPatient: NewPatient): Patient => {
   return patientToAdd;
 };
 
+/**
+ * 
+ * @param newEntry 
+ * @param patientId 
+ * @returns a patient updated with the entry
+ */
+const addNewEntryToPatient = (newEntry: EntryWithoutId, patientId: string) : Patient => {
+
+  const entryToAdd: Entry = {
+    ...newEntry,
+    id: uuid()
+  };
+
+  //find patient's index
+  const index = patients.findIndex(element => element.id == patientId);
+  //update value at that index
+  patients[index].entries.push(entryToAdd);
+
+  return patients[index];
+}; 
+
 
 export const findPatientById = (id: string): Patient |undefined => {
   if (!id || !isString(id)) {
@@ -33,5 +54,6 @@ export const findPatientById = (id: string): Patient |undefined => {
 export default {
   getNonSensitivePatients,
   addNewPatient,
-  findPatientById
+  findPatientById,
+  addNewEntryToPatient
 };
