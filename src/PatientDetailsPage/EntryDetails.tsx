@@ -23,21 +23,15 @@ export const EntryDetails = ({ entry }: Props) => {
 
   const populateDiagnosesDetails = (): Diagnosis[] => {
     const diagnosesDetailArr: Diagnosis[] = [];
-    console.log('before the foreach', diagnoses, entry.diagnosisCodes);
 
-    if (diagnoses && diagnoses.length > 0) {
-      console.log('running the foreach', diagnoses, entry.diagnosisCodes);
-      
+    if (diagnoses && diagnoses.length > 0) {      
       entry.diagnosisCodes?.forEach(code => {
         const details = diagnoses.find(d => { return d.code == code; });
         (details !== undefined) && diagnosesDetailArr.push(details);
       });
       return diagnosesDetailArr;
     }
-
-    console.log('skipped the foreach', diagnoses, entry.diagnosisCodes);
     return diagnosesDetailArr;
-    
   };
 
   switch (entry.type) {

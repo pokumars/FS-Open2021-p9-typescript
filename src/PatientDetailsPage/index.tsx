@@ -1,10 +1,11 @@
 import axios from 'axios';
 import React from 'react';
 import { useParams } from 'react-router';
-import { Icon, Segment } from 'semantic-ui-react';
+import { Button, Icon, Segment } from 'semantic-ui-react';
+import { AddEntryModal } from '../AddEntryModal';
 import { apiBaseUrl } from '../constants';
-import {  addToPatientInfoList, useStateValue } from '../state';
-import {  Patient } from '../types';
+import { addToDiagnoses, addToPatientInfoList, useStateValue } from '../state';
+import { Diagnosis, Patient } from '../types';
 import { EntryDetails } from './EntryDetails';
 
 interface PatientDetailsParams {
@@ -14,7 +15,17 @@ interface PatientDetailsParams {
 const PatientDetailsPage = () => {
   const { id } = useParams<PatientDetailsParams>();
   const [{ patientInfo, diagnoses }, dispatch] = useStateValue();
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<string | undefined>();
+
   const currentPatient = Object.values(patientInfo).find((p) => p.id == id);
+
+  const openModal = (): void => setModalOpen(true);
+
+  const closeModal = (): void => {
+    setModalOpen(false);
+    setError(undefined);
+  };
 
 
   React.useEffect(() => {
@@ -33,21 +44,19 @@ const PatientDetailsPage = () => {
       }
     };
 
-    if (!currentPatient || currentPatient ==undefined || currentPatient == null ) {
+    if (!currentPatient || currentPatient == undefined || currentPatient == null) {
       void fetchPatientInfo();
     }
-    
+
   }, [dispatch, currentPatient]);
 
-/*   React.useEffect(() => {
+  React.useEffect(() => {
     //check state for Diagnoses
-    console.log('fetching the diagnoses');
     //fetch the Diagnoses
     const fetchDiagnoses = async () => {
       try {
         const response = await axios.get<Diagnosis[]>(apiBaseUrl + '/diagnoses/');
         const fetchedDiagnoses = response.data;
-        console.log(fetchedDiagnoses);
         //put Diagnoses in state
         dispatch(addToDiagnoses(fetchedDiagnoses));
 
@@ -56,25 +65,23 @@ const PatientDetailsPage = () => {
       }
     };
 
-    if (!diagnoses || diagnoses.length < 1 || diagnoses == null ) {
+    if (!diagnoses || diagnoses.length < 1 || diagnoses == null) {
       void fetchDiagnoses();
     }
-    
-  }, [dispatch]); */
 
-  console.log('diagnoses,---------', diagnoses);
+  }, [dispatch]);
 
   const genderIcons = () => {
     switch (currentPatient?.gender) {
       case 'male': return 'mars';
-      case 'female': return 'venus'; 
-      case 'other': return 'other gender horizontal';  
+      case 'female': return 'venus';
+      case 'other': return 'other gender horizontal';
       default:
         return 'mars';
-    } 
+    }
   };
- //{currentPatient.gender == 'male' ? 'mars' : 'venus'}
- 
+  //{currentPatient.gender == 'male' ? 'mars' : 'venus'}
+
 
   return (
     <div>
@@ -88,13 +95,20 @@ const PatientDetailsPage = () => {
           <p>ssn: {currentPatient.ssn}</p>
           <p>occupation: {currentPatient.occupation}</p>
           <p>{currentPatient.dateOfBirth}</p>
+          <AddEntryModal  
+            modalOpen={modalOpen}
+            onSubmit={() => console.log('submit clicked')}
+            error={error}
+            onClose={closeModal}
+          />
+          <Button onClick={openModal}>Add New Entry</Button>
 
           <h3>Entries</h3>
           {currentPatient.entries.length > 0 ? currentPatient.entries.map((entry) => {
             return (
               <EntryDetails entry={entry} key={entry.id} />
             );
-          }): <Segment>The patient has not had any visits.</Segment>}
+          }) : <Segment>The patient has not had any visits.</Segment>}
         </div> :
         <h1>Loading</h1>}
     </div>
