@@ -1,12 +1,13 @@
 import React from 'react';
 import { Modal, Segment } from 'semantic-ui-react';
-import { AddEntryForm } from './AddEntryForm';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { AddEntryForm, EntryFormValues } from './AddEntryForm';
 
 interface Props {
   modalOpen: boolean;
   onClose: () => void;
-  // onSubmit: (values: any) => void;
-  onSubmit: () => void;
+  //onSubmit: (values: any) => void;
+  onSubmit: (values: EntryFormValues) => void;
   error?: string;
 }
 
@@ -17,7 +18,7 @@ export const AddEntryModal = ({modalOpen, onClose, onSubmit, error}: Props) => {
       <Modal.Content>
         {error && <Segment inverted color="red">{`Error: ${error}`}</Segment>}
         <AddEntryForm 
-        onCancel={() => console.log('cancel clicked')}
+        onCancel={onClose}
         onSubmit={onSubmit}
          />
       </Modal.Content>

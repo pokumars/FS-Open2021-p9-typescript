@@ -1,7 +1,7 @@
 import React from 'react';
 import { HealthCheckEntryComponent, HospitalEntryComponent, OccupationalHealthEntryComponent } from '../Entries';
 import { useStateValue } from '../state';
-import { Entry, Diagnosis } from '../types';
+import { Entry, Diagnosis, EntryTypeNames } from '../types';
 
 /**
  * Helper function for exhaustive type checking
@@ -35,13 +35,13 @@ export const EntryDetails = ({ entry }: Props) => {
   };
 
   switch (entry.type) {
-    case "Hospital":
+    case EntryTypeNames.Hospital:
 
       return <HospitalEntryComponent entry={entry} diagnosisDetails={populateDiagnosesDetails()} />;
-    case "HealthCheck":
+    case EntryTypeNames.HealthCheck:
 
       return <HealthCheckEntryComponent entry={entry} diagnosisDetails={populateDiagnosesDetails()} />;
-    case "OccupationalHealthcare":
+    case EntryTypeNames.OccupationalHealthcare:
       return <OccupationalHealthEntryComponent entry={entry} diagnosisDetails={populateDiagnosesDetails()} />;
 
     default:

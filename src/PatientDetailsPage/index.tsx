@@ -3,6 +3,7 @@ import React from 'react';
 import { useParams } from 'react-router';
 import { Button, Icon, Segment } from 'semantic-ui-react';
 import { AddEntryModal } from '../AddEntryModal';
+import { EntryFormValues } from '../AddEntryModal/AddEntryForm';
 import { apiBaseUrl } from '../constants';
 import { addToDiagnoses, addToPatientInfoList, useStateValue } from '../state';
 import { Diagnosis, Patient } from '../types';
@@ -49,6 +50,7 @@ const PatientDetailsPage = () => {
     }
 
   }, [dispatch, currentPatient]);
+  
 
   React.useEffect(() => {
     //check state for Diagnoses
@@ -70,6 +72,29 @@ const PatientDetailsPage = () => {
     }
 
   }, [dispatch]);
+
+  const submitNewEntry = async (values: EntryFormValues): Promise<void> => {
+    console.log('values in submitNewEntry ', values);
+    try {
+      const {data: updatedPatient} = await axios.post<Patient>(
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+        `${apiBaseUrl}/patients/${currentPatient?.id}/entries`,
+        values
+      );
+      dispatch(addToPatientInfoList(updatedPatient));
+      closeModal();
+    } catch (e: any) {
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      console.error(`try-catch submitNewEntry ${e.response?.data}` || 'Unknown Error');
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      setError(`try-catch submitNewEntry  ${e.response?.data?.error}` || 'Unknown error');
+    }
+  };
+
+  /* const submitNewEntry = (values: EntryFormValues)=> {
+    console.log('values in submitNewEntry ', values);
+    closeModal();
+  }; */
 
   const genderIcons = () => {
     switch (currentPatient?.gender) {
@@ -97,7 +122,7 @@ const PatientDetailsPage = () => {
           <p>{currentPatient.dateOfBirth}</p>
           <AddEntryModal  
             modalOpen={modalOpen}
-            onSubmit={() => console.log('submit clicked')}
+            onSubmit={submitNewEntry}
             error={error}
             onClose={closeModal}
           />
