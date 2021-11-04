@@ -3,10 +3,9 @@ import React from 'react';
 import { useParams } from 'react-router';
 import { Button, Icon, Segment } from 'semantic-ui-react';
 import { AddEntryModal } from '../AddEntryModal';
-import { EntryFormValues } from '../AddEntryModal/AddEntryForm';
 import { apiBaseUrl } from '../constants';
 import { addToDiagnoses, addToPatientInfoList, useStateValue } from '../state';
-import { Diagnosis, Patient } from '../types';
+import { Diagnosis, Patient, EntryFormValues } from '../types';
 import { EntryDetails } from './EntryDetails';
 
 interface PatientDetailsParams {
@@ -91,7 +90,7 @@ const PatientDetailsPage = () => {
     }
   };
 
-  /* const submitNewEntry = (values: EntryFormValues)=> {
+/*   const submitNewEntry = (values: EntryFormValues)=> {
     console.log('values in submitNewEntry ', values);
     closeModal();
   }; */
@@ -105,8 +104,6 @@ const PatientDetailsPage = () => {
         return 'mars';
     }
   };
-  //{currentPatient.gender == 'male' ? 'mars' : 'venus'}
-
 
   return (
     <div>

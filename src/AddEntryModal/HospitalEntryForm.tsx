@@ -4,17 +4,15 @@ import React from 'react';
 import { Grid, Button } from "semantic-ui-react";
 import {  DiagnosisSelection, NumberField, TextField } from '../AddPatientModal/FormField';
 import { useStateValue } from '../state';
-import { Entry, EntryTypeNames } from '../types';
+import { EntryFormValues, EntryTypeNames, HospitalEntryFormValues } from '../types';
 
-
-export type EntryFormValues = Omit<Entry, "id">;
 
 interface Props {
-  onSubmit: (values: EntryFormValues) => void;
+  onSubmit: (values: HospitalEntryFormValues) => void;
   //onSubmit: () => void;
   onCancel: () => void;
 }
-export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
+export const HospitalEntryForm = ({ onSubmit, onCancel }: Props) => {
   const [{ diagnoses }]  = useStateValue();
 
   return (
@@ -24,8 +22,11 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
         date: "",
         specialist: "",
         diagnosisCodes: [],
-        type : EntryTypeNames.HealthCheck,
-        healthCheckRating: "",
+        type : EntryTypeNames.Hospital,
+        discharge: {
+          date: "",
+          criteria: ""
+        },
       }}
       onSubmit={onSubmit}
       validate={(values) => {
@@ -41,14 +42,24 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
         if (!values.specialist) {
           errors.specialist = requiredError;
         }
-        if (!values.healthCheckRating) {
-          errors.healthCheckRating = requiredError;
-        }
         if (!values.type) {
           errors.type = requiredError;
         }
-        if (values.type !== EntryTypeNames.HealthCheck) {
-          errors.type = "value should be " + EntryTypeNames.HealthCheck;
+        if (values.type !== EntryTypeNames.Hospital) {
+          errors.type = "value should be " + EntryTypeNames.Hospital;
+        }
+        if (!values.discharge?.criteria) {
+          errors.discharge= requiredError;
+        }
+        if (!values.discharge?.date) {
+          errors.discharge = requiredError;
+        }
+
+        if (!values.discharge?.criteria) {
+          errors["discharge.criteria"]= requiredError;
+        }
+        if (!values.discharge?.date) {
+          errors["discharge.date"] = requiredError;
         }
         return errors;
       }}
@@ -76,16 +87,22 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
               component={TextField}
             />
             <Field
-              label="Health Check Rating"
-              name="healthCheckRating"
-              component={NumberField}
-              min={0}
-              max={3}
+              label="Discharge date"
+              placeholder="YYYY-MM-DD"
+              name="discharge.date"
+              component={TextField}
+            />
+            
+            <Field
+              label="Discharge reason"
+              placeholder="Thumb has healed"
+              name="discharge.criteria"
+              component={TextField}
             />
 
             <Field
               label="Visit type"
-              placeholder="HealthCheck"
+              placeholder="Hospital"
               name="type"
               component={TextField}
             />

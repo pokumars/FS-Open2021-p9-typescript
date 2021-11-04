@@ -61,9 +61,19 @@ export interface HospitalEntry extends BaseEntry {
 
 //https://fullstackopen.com/en/part9/react_with_types#full-entries
 export type Entry = 
-| HospitalEntry
 | HealthCheckEntry 
+| HospitalEntry
 | OccupationalHealthcareEntry;
+
+export type HospitalEntryFormValues = Omit<HospitalEntry, "id">;
+export type HealthCheckEntryFormValues  = Omit<HealthCheckEntry, "id">;
+export type OccupationalHealthcareEntryFormValues = Omit<Entry, "id">;
+
+//export type EntryFormValues = UnionOmit<Entry, 'id'>;
+export type EntryFormValues = 
+| HospitalEntryFormValues 
+| HealthCheckEntryFormValues
+| OccupationalHealthcareEntryFormValues;
 
 export interface Patient {
   id: string;
