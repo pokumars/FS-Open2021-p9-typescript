@@ -2,9 +2,9 @@
 import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import { Grid, Button } from "semantic-ui-react";
-import {  DiagnosisSelection, NumberField, TextField } from '../AddPatientModal/FormField';
+import {  DiagnosisSelection, TextField } from '../AddPatientModal/FormField';
 import { useStateValue } from '../state';
-import { EntryFormValues, EntryTypeNames, HospitalEntryFormValues } from '../types';
+import { EntryTypeNames, FlattenedHospitalEntryFormValues, HospitalEntryFormValues } from '../types';
 
 
 interface Props {
@@ -15,6 +15,10 @@ interface Props {
 export const HospitalEntryForm = ({ onSubmit, onCancel }: Props) => {
   const [{ diagnoses }]  = useStateValue();
 
+  const unflattenValuesAndSubmit=(values: FlattenedHospitalEntryFormValues) => {
+    onSubmit ({...values, discharge: {date: values.dischargeDate, criteria: values.criteria }});
+  };
+
   return (
     <Formik
       initialValues={{
@@ -23,12 +27,11 @@ export const HospitalEntryForm = ({ onSubmit, onCancel }: Props) => {
         specialist: "",
         diagnosisCodes: [],
         type : EntryTypeNames.Hospital,
-        discharge: {
-          date: "",
-          criteria: ""
-        },
+        dischargeDate: "",
+        criteria: ""
+
       }}
-      onSubmit={onSubmit}
+      onSubmit={unflattenValuesAndSubmit}
       validate={(values) => {
         const requiredError = "Field is required";
         const errors: { [field: string]: string } = {};
@@ -48,19 +51,13 @@ export const HospitalEntryForm = ({ onSubmit, onCancel }: Props) => {
         if (values.type !== EntryTypeNames.Hospital) {
           errors.type = "value should be " + EntryTypeNames.Hospital;
         }
-        if (!values.discharge?.criteria) {
-          errors.discharge= requiredError;
+        if (!values.criteria) {
+          errors.criteria = requiredError;
         }
-        if (!values.discharge?.date) {
-          errors.discharge = requiredError;
+        if (!values.dischargeDate) {
+          errors.dischargeDate = requiredError;
         }
 
-        if (!values.discharge?.criteria) {
-          errors["discharge.criteria"]= requiredError;
-        }
-        if (!values.discharge?.date) {
-          errors["discharge.date"] = requiredError;
-        }
         return errors;
       }}
     >
@@ -89,14 +86,14 @@ export const HospitalEntryForm = ({ onSubmit, onCancel }: Props) => {
             <Field
               label="Discharge date"
               placeholder="YYYY-MM-DD"
-              name="discharge.date"
+              name="dischargeDate"
               component={TextField}
             />
             
             <Field
               label="Discharge reason"
               placeholder="Thumb has healed"
-              name="discharge.criteria"
+              name="criteria"
               component={TextField}
             />
 

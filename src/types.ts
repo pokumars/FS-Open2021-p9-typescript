@@ -66,10 +66,15 @@ export type Entry =
 | OccupationalHealthcareEntry;
 
 export type HospitalEntryFormValues = Omit<HospitalEntry, "id">;
-export type HealthCheckEntryFormValues  = Omit<HealthCheckEntry, "id">;
-export type OccupationalHealthcareEntryFormValues = Omit<Entry, "id">;
+export interface FlattenedHospitalEntryFormValues extends Omit<HospitalEntry, "id"| "discharge">{
+  dischargeDate: string,
+  criteria: string
+}
 
-//export type EntryFormValues = UnionOmit<Entry, 'id'>;
+export type HealthCheckEntryFormValues  = Omit<HealthCheckEntry, "id">;
+
+export type OccupationalHealthcareEntryFormValues = Omit<OccupationalHealthcareEntry, "id">;
+
 export type EntryFormValues = 
 | HospitalEntryFormValues 
 | HealthCheckEntryFormValues

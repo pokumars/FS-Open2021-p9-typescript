@@ -4,11 +4,11 @@ import React from 'react';
 import { Grid, Button } from "semantic-ui-react";
 import {  DiagnosisSelection, NumberField, TextField } from '../AddPatientModal/FormField';
 import { useStateValue } from '../state';
-import { EntryFormValues, EntryTypeNames } from '../types';
+import { EntryFormValues, HealthCheckEntryFormValues, EntryTypeNames } from '../types';
 
 
 interface Props {
-  onSubmit: (values: EntryFormValues) => void;
+  onSubmit: (values: HealthCheckEntryFormValues) => void;
   //onSubmit: () => void;
   onCancel: () => void;
 }

@@ -21,6 +21,9 @@ export const HealthCheckEntryComponent = ({entry, diagnosisDetails}: Props) => {
           <Header as='h4' > Description</Header>
         {entry.description}
         </Card.Description>
+        {/*The lower the number of the health rating, the better the health.
+         Yes that seems counterintuitive but I am just using the pre-existing code that I forked. 
+         and that is how they did it*/}
         <HealthRatingBar showText={false} rating={entry.healthCheckRating} />
         <Header as='h4' > Diagnoses</Header>
         {          
