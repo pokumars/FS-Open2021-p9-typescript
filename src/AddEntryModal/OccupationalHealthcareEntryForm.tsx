@@ -4,21 +4,27 @@ import React from 'react';
 import { Grid, Button } from "semantic-ui-react";
 import {  DiagnosisSelection, TextField } from '../AddPatientModal/FormField';
 import { useStateValue } from '../state';
-import { EntryTypeNames, FlattenedHospitalEntryFormValues, HospitalEntryFormValues } from '../types';
+import { EntryTypeNames, FlattenedOccupationalHealthcareEntryFormValues, HospitalEntryFormValues, OccupationalHealthcareEntryFormValues } from '../types';
 
 
 interface Props {
-  onSubmit: (values: HospitalEntryFormValues) => void;
+  onSubmit: (values: OccupationalHealthcareEntryFormValues) => void;
   //onSubmit: () => void;
   onCancel: () => void;
 }
-export const HospitalEntryForm = ({ onSubmit, onCancel }: Props) => {
+export const OccupationalHealthcareEntryForm = ({ onSubmit, onCancel }: Props) => {
   const [{ diagnoses }]  = useStateValue();
 
-  const unflattenValuesAndSubmit=(values: FlattenedHospitalEntryFormValues) => {
-    //FlattenedHospitalEntryFormValues is HospitalEntryFormValues without dischargeDate.
+  const unflattenValuesAndSubmit=(values: FlattenedOccupationalHealthcareEntryFormValues) => {
+    //FlattenedOccupationalHealthcareEntryFormValues is OccupationalHealthcareEntryFormValues without dischargeDate.
     // Instead i use dischargeDate and criteria and reformulate HospitalEntryFormValues for submission
-    onSubmit ({...values, discharge: {date: values.dischargeDate, criteria: values.criteria }});
+    
+    onSubmit ({...values,
+      sickLeave: values.sickLeaveEndDate && values.sickLeaveStartDate
+      ? {startDate: values.sickLeaveStartDate, 
+        endDate: values.sickLeaveEndDate }
+      : undefined
+    });
   };
 
   return (
@@ -28,9 +34,10 @@ export const HospitalEntryForm = ({ onSubmit, onCancel }: Props) => {
         date: "",
         specialist: "",
         diagnosisCodes: [],
-        type : EntryTypeNames.Hospital,
-        dischargeDate: "",
-        criteria: ""
+        type : EntryTypeNames.OccupationalHealthcare,
+        sickLeaveStartDate: "",
+        sickLeaveEndDate: "",
+        employerName: ""
 
       }}
       onSubmit={unflattenValuesAndSubmit}
@@ -50,14 +57,11 @@ export const HospitalEntryForm = ({ onSubmit, onCancel }: Props) => {
         if (!values.type) {
           errors.type = requiredError;
         }
-        if (values.type !== EntryTypeNames.Hospital) {
-          errors.type = "value should be " + EntryTypeNames.Hospital;
+        if (values.type !== EntryTypeNames.OccupationalHealthcare) {
+          errors.type = "value should be " + EntryTypeNames.OccupationalHealthcare;
         }
-        if (!values.criteria) {
-          errors.criteria = requiredError;
-        }
-        if (!values.dischargeDate) {
-          errors.dischargeDate = requiredError;
+        if (!values.employerName) {
+          errors.employerName = requiredError;
         }
 
         return errors;
@@ -86,16 +90,21 @@ export const HospitalEntryForm = ({ onSubmit, onCancel }: Props) => {
               component={TextField}
             />
             <Field
-              label="Discharge date"
-              placeholder="YYYY-MM-DD"
-              name="dischargeDate"
+              label="Employer name"
+              placeholder="Employer name"
+              name="employerName"
               component={TextField}
             />
-            
             <Field
-              label="Discharge reason"
-              placeholder="Thumb has healed"
-              name="criteria"
+              label="Sick leave start date (optional)"
+              placeholder="YYYY-MM-DD"
+              name="sickLeaveStartDate"
+              component={TextField}
+            />
+            <Field
+              label="Sick leave end date (optional)"
+              placeholder="YYYY-MM-DD"
+              name="sickLeaveEndDate"
               component={TextField}
             />
 

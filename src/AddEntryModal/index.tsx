@@ -4,6 +4,7 @@ import { Dropdown, Header, Modal, Segment } from 'semantic-ui-react';
 import { HealthcheckEntryForm  } from './HealthcheckEntryForm';
 import { EntryFormValues, EntryTypeNames } from '../types';
 import { HospitalEntryForm } from './HospitalEntryForm';
+import { OccupationalHealthcareEntryForm } from './OccupationalHealthcareEntryForm';
 
 
 interface Props {
@@ -41,7 +42,9 @@ export const AddEntryModal = ({modalOpen, onClose, onSubmit, error}: Props) => {
         />;
       case EntryTypeNames.OccupationalHealthcare:
 
-        return <p>OccupationalHealthcare form not ready</p>;
+        return <OccupationalHealthcareEntryForm
+        onCancel={onClose}
+        onSubmit={onSubmit} />;
 
       default:
         return <p>the switch case of the dropdown is having some error</p>;
