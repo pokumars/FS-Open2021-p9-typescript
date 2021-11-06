@@ -1,0 +1,17 @@
+.App {
+  text-align: center;
+}
+
+.total-container {
+  background-color: #e5e5e5;
+  padding: 10px 2px;
+  border-top: 1px solid rgb(48, 51, 51);
+  border-bottom: 1px solid rgb(48, 51, 51);
+}
+
+.part {
+  background-color: #ddffff;
+  border-left: 6px solid #2196F3;
+  padding: 0px 15px;
+}
+
