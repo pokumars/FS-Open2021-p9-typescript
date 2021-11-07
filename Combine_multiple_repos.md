@@ -1,4 +1,4 @@
-# How to combine multiple repositories into one repository
+# How to combine multiple git repositories into one git repository
 ### preserving the commit history of all of them in the new repo
 
 ### Motivation
@@ -17,6 +17,17 @@ Since I am utterly unfamilar with the Perl ecosystem I just looked for other way
 
 The solution I used is [How to Import Multiple Projects into a Single Git Repository ](https://www.w3docs.com/snippets/git/how-to-import-multiple-projects-into-a-single-git-repository.html) by W3docs where they explain how to do it for 2 repos.
 I dont really love the way they explained it so I have given some screenshots below to help better understand in case anyone ever needs this.
+
+### NB
+After you finish successfully and try to check the individual projects, you may encounter this error when you open any typescript file -
+`Parsing error: Cannot read file 'c:\users\host_repo\tsconfig.json'.`
+The solution to this is to modify the eslintrc of each project; change the parserOptions.project to "./project_directory/tsconfig.json" from "./tsconfig.json"
+```
+  "parserOptions": {
+    "project": "./incoming_backend_dir/tsconfig.json"
+  }
+  ```
+  Alternatively consult this [Stack Overflow](https://stackoverflow.com/questions/64933543/parsing-error-cannot-read-file-tsconfig-json-eslint) thread for the relevant discussion and suggested solutions
 
 
 <br><br><br>
@@ -70,6 +81,3 @@ git pull -s subtree incoming9d main<br>
 | fig3 add repo 2 to host repo   | fig4 add repo 3 & 4 to host repo  |
 |------------|-------------| 
 | ![screenshot from my bash terminal as I did it for all 4 repos- part 3](./images/merge_multiple_repos_into1_3.png)| ![screenshot from my bash terminal as I did it for all 4 repos- part 4](./images/merge_multiple_repos_into1_4.png) |
-
-
-

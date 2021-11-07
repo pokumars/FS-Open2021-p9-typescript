@@ -10,10 +10,9 @@
 [Full Stack open 2021](https://fullstackopen.com/en/)
 
 
-incoming_backend_dir - the backend for patientor
-
-incoming9b_dir - The bit about body mass index, exercise calculator (i.e physical e.g run, gym), command line and express. Ex 9.1 - 9.7
-
-incoming9c_dir - The Patientor frontend
-
-incoming9d_dir - The React bit about "course parts". only ex9.14 and 15
+| Directory  | description     |
+|--------------|-----------|
+| incoming_backend_dir |  the backend for patientor |
+| incoming9b_dir | The bit about body mass index, exercise calculator (i.e physical e.g run, gym), command line and express. Ex 9.1 - 9.7 |
+| incoming9c_dir | The Patientor frontend |
+| incoming9d_dir | The React bit about "course parts". only ex9.14 and 15 |
