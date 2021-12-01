@@ -26,6 +26,11 @@ The solution to this is to modify the eslintrc of each project; change the parse
   "parserOptions": {
     "project": "./incoming_backend_dir/tsconfig.json"
   }
+  
+  //For the React project this was what worked
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  }
   ```
   Alternatively consult this [Stack Overflow](https://stackoverflow.com/questions/64933543/parsing-error-cannot-read-file-tsconfig-json-eslint) thread for the relevant discussion and suggested solutions
 
