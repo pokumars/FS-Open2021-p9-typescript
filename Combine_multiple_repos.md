@@ -22,7 +22,7 @@ I dont really love the way they explained it so I have given some screenshots be
 After you finish successfully and try to check the individual projects, you may encounter this error when you open any typescript file -
 `Parsing error: Cannot read file 'c:\users\host_repo\tsconfig.json'.`
 The solution to this is to modify the eslintrc of each project; change the parserOptions.project to "./project_directory/tsconfig.json" from "./tsconfig.json"
-```
+```js
   "parserOptions": {
     "project": "./incoming_backend_dir/tsconfig.json"
   }

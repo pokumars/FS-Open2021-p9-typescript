@@ -4,7 +4,19 @@ import React from 'react';
 import { Grid, Button } from "semantic-ui-react";
 import {  DiagnosisSelection, NumberField, TextField } from '../AddPatientModal/FormField';
 import { useStateValue } from '../state';
-import { EntryFormValues, HealthCheckEntryFormValues, EntryTypeNames } from '../types';
+import { HealthCheckEntryFormValues, EntryTypeNames } from '../types';
+import * as Yup from 'yup';
+
+
+const HealthCheckEntrySchema = Yup.object().shape({
+  description: Yup.string().min(4, 'Must be ${min} characters or more').required(),
+  date: Yup.date().default(() => new Date()),
+  specialist: Yup.string().min(1, 'Too short!').required(),
+  diagnosisCodes: Yup.array().ensure().of(Yup.string()),
+  healthCheckRating: Yup.number().min(0).max(3).integer().required().default(() => 3),
+  //this takes an exact match of a word and gives this error message if not
+  type: Yup.string().matches(/\bHealthCheck\b/, "The value must be exactly -> " + EntryTypeNames.HealthCheck).default(() => EntryTypeNames.HealthCheck)//The value has to be healthcheck
+});
 
 
 interface Props {
@@ -26,30 +38,8 @@ export const HealthcheckEntryForm = ({ onSubmit, onCancel }: Props) => {
         healthCheckRating: 3,
       }}
       onSubmit={onSubmit}
-      validate={(values) => {
-        const requiredError = "Field is required";
-        const errors: { [field: string]: string } = {};
+      validationSchema= {HealthCheckEntrySchema}
 
-        if (!values.date) {
-          errors.date = requiredError;
-        }
-        if (!values.description) {
-          errors.description = requiredError;
-        }
-        if (!values.specialist) {
-          errors.specialist = requiredError;
-        }
-        if (!values.type) {
-          errors.type = requiredError;
-        }
-        if (values.type !== EntryTypeNames.HealthCheck) {
-          errors.type = "value should be " + EntryTypeNames.HealthCheck;
-        }
-        if (!values.healthCheckRating) {
-          errors.healthCheckRating = requiredError;
-        }
-        return errors;
-      }}
     >
       {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
         return (
@@ -118,3 +108,27 @@ export const HealthcheckEntryForm = ({ onSubmit, onCancel }: Props) => {
     </Formik>
   );
 };
+/*      validate={(values) => {
+        const requiredError = "Field is required";
+        const errors: { [field: string]: string } = {};
+
+        if (!values.date) {
+          errors.date = requiredError;
+        }
+        if (!values.description) {
+          errors.description = requiredError;
+        }
+        if (!values.specialist) {
+          errors.specialist = requiredError;
+        }
+        if (!values.type) {
+          errors.type = requiredError;
+        }
+        if (values.type !== EntryTypeNames.HealthCheck) {
+          errors.type = "value should be " + EntryTypeNames.HealthCheck;
+        }
+        if (!values.healthCheckRating) {
+          errors.healthCheckRating = requiredError;
+        }
+        return errors;
+      }} */

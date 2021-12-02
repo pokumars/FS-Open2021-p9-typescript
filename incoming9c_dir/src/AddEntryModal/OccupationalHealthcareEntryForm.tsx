@@ -4,7 +4,7 @@ import React from 'react';
 import { Grid, Button } from "semantic-ui-react";
 import {  DiagnosisSelection, TextField } from '../AddPatientModal/FormField';
 import { useStateValue } from '../state';
-import { EntryTypeNames, FlattenedOccupationalHealthcareEntryFormValues, HospitalEntryFormValues, OccupationalHealthcareEntryFormValues } from '../types';
+import { EntryTypeNames, FlattenedOccupationalHealthcareEntryFormValues, OccupationalHealthcareEntryFormValues } from '../types';
 
 
 interface Props {
