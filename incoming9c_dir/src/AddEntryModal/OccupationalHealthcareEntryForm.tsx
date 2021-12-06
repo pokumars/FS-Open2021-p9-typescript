@@ -4,68 +4,48 @@ import React from 'react';
 import { Grid, Button } from "semantic-ui-react";
 import {  DiagnosisSelection, TextField } from '../AddPatientModal/FormField';
 import { useStateValue } from '../state';
-import { EntryTypeNames, FlattenedOccupationalHealthcareEntryFormValues, OccupationalHealthcareEntryFormValues } from '../types';
+import { EntryTypeNames, OccupationalHealthcareEntryFormValues } from '../types';
+import * as Yup from 'yup';
+import { todaysDate } from '../utilityFxns';
+
+const occupationalHealthcareEntrySchema = Yup.object().shape({
+  description: Yup.string().min(4, 'Must be {min} characters or more').required(),
+  date: Yup.date().default(() => new Date()).required(),
+  specialist: Yup.string().required().min(1, 'Specialist name is required'),
+  diagnosisCodes: Yup.array().ensure().of(Yup.string()),
+  //this takes an exact match of a word and gives this error message if not
+  type: Yup.string().matches(/\bOccupationalHealthcare\b/, "The value must be exactly -> " + EntryTypeNames.OccupationalHealthcare).default(() => EntryTypeNames.HealthCheck),
+  employerName: Yup.string().required('Employer name is required'),
+  sickLeave: Yup.object().shape({
+    startDate: Yup.date().default(() => new Date()),
+    endDate: Yup.date().default(() => new Date())
+  })
+});
+
 
 
 interface Props {
   onSubmit: (values: OccupationalHealthcareEntryFormValues) => void;
-  //onSubmit: () => void;
   onCancel: () => void;
 }
 export const OccupationalHealthcareEntryForm = ({ onSubmit, onCancel }: Props) => {
   const [{ diagnoses }]  = useStateValue();
 
-  const unflattenValuesAndSubmit=(values: FlattenedOccupationalHealthcareEntryFormValues) => {
-    //FlattenedOccupationalHealthcareEntryFormValues is OccupationalHealthcareEntryFormValues without dischargeDate.
-    // Instead i use dischargeDate and criteria and reformulate HospitalEntryFormValues for submission
-    
-    onSubmit ({...values,
-      sickLeave: values.sickLeaveEndDate && values.sickLeaveStartDate
-      ? {startDate: values.sickLeaveStartDate, 
-        endDate: values.sickLeaveEndDate }
-      : undefined
-    });
-  };
-
   return (
     <Formik
       initialValues={{
         description: "",
-        date: "",
+        date: todaysDate,
         specialist: "",
         diagnosisCodes: [],
         type : EntryTypeNames.OccupationalHealthcare,
-        sickLeaveStartDate: "",
-        sickLeaveEndDate: "",
+        "sickLeave.startDate": "",
+        "sickLeave.endDate": "",
         employerName: ""
 
       }}
-      onSubmit={unflattenValuesAndSubmit}
-      validate={(values) => {
-        const requiredError = "Field is required";
-        const errors: { [field: string]: string } = {};
-
-        if (!values.date) {
-          errors.date = requiredError;
-        }
-        if (!values.description) {
-          errors.description = requiredError;
-        }
-        if (!values.specialist) {
-          errors.specialist = requiredError;
-        }
-        if (!values.type) {
-          errors.type = requiredError;
-        }
-        if (values.type !== EntryTypeNames.OccupationalHealthcare) {
-          errors.type = "value should be " + EntryTypeNames.OccupationalHealthcare;
-        }
-        if (!values.employerName) {
-          errors.employerName = requiredError;
-        }
-
-        return errors;
-      }}
+      onSubmit={onSubmit}
+      validationSchema= {occupationalHealthcareEntrySchema}
     >
       {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
         return (
@@ -98,13 +78,13 @@ export const OccupationalHealthcareEntryForm = ({ onSubmit, onCancel }: Props) =
             <Field
               label="Sick leave start date (optional)"
               placeholder="YYYY-MM-DD"
-              name="sickLeaveStartDate"
+              name="sickLeave.startDate"
               component={TextField}
             />
             <Field
               label="Sick leave end date (optional)"
               placeholder="YYYY-MM-DD"
-              name="sickLeaveEndDate"
+              name="sickLeave.endDate"
               component={TextField}
             />
 

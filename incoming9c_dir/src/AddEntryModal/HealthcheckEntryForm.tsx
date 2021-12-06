@@ -6,11 +6,12 @@ import {  DiagnosisSelection, NumberField, TextField } from '../AddPatientModal/
 import { useStateValue } from '../state';
 import { HealthCheckEntryFormValues, EntryTypeNames } from '../types';
 import * as Yup from 'yup';
+import { todaysDate } from '../utilityFxns';
 
 
-const HealthCheckEntrySchema = Yup.object().shape({
+const healthCheckEntrySchema = Yup.object().shape({
   description: Yup.string().min(4, 'Must be ${min} characters or more').required(),
-  date: Yup.date().default(() => new Date()),
+  date: Yup.date().default(() => new Date()).required(),
   specialist: Yup.string().min(1, 'Too short!').required(),
   diagnosisCodes: Yup.array().ensure().of(Yup.string()),
   healthCheckRating: Yup.number().min(0).max(3).integer().required().default(() => 3),
@@ -31,15 +32,14 @@ export const HealthcheckEntryForm = ({ onSubmit, onCancel }: Props) => {
     <Formik
       initialValues={{
         description: "",
-        date: "",
+        date: todaysDate,
         specialist: "",
         diagnosisCodes: [],
         type : EntryTypeNames.HealthCheck,
         healthCheckRating: 3,
       }}
       onSubmit={onSubmit}
-      validationSchema= {HealthCheckEntrySchema}
-
+      validationSchema= {healthCheckEntrySchema}
     >
       {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
         return (
