@@ -82,6 +82,7 @@ const PatientDetailsPage = () => {
       );
       dispatch(addToPatientInfoList(updatedPatient));
       closeModal();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       console.error(`try-catch submitNewEntry ${e.response?.data}` || 'Unknown Error');

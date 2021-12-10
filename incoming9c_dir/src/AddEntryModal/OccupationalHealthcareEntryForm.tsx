@@ -14,7 +14,9 @@ const occupationalHealthcareEntrySchema = Yup.object().shape({
   specialist: Yup.string().required().min(1, 'Specialist name is required'),
   diagnosisCodes: Yup.array().ensure().of(Yup.string()),
   //this takes an exact match of a word and gives this error message if not
-  type: Yup.string().matches(/\bOccupationalHealthcare\b/, "The value must be exactly -> " + EntryTypeNames.OccupationalHealthcare).default(() => EntryTypeNames.HealthCheck),
+  type: Yup.string().matches(/\bOccupationalHealthcare\b/,
+     "The value must be exactly -> " + EntryTypeNames.OccupationalHealthcare)
+     .default(() => EntryTypeNames.OccupationalHealthcare),
   employerName: Yup.string().required('Employer name is required'),
   sickLeave: Yup.object().shape({
     startDate: Yup.date().default(() => new Date()),
@@ -39,10 +41,11 @@ export const OccupationalHealthcareEntryForm = ({ onSubmit, onCancel }: Props) =
         specialist: "",
         diagnosisCodes: [],
         type : EntryTypeNames.OccupationalHealthcare,
-        "sickLeave.startDate": "",
-        "sickLeave.endDate": "",
+        sickLeave: {
+          startDate: "",
+          endDate: "",
+        },
         employerName: ""
-
       }}
       onSubmit={onSubmit}
       validationSchema= {occupationalHealthcareEntrySchema}

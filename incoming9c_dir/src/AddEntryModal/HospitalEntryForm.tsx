@@ -5,7 +5,23 @@ import { Grid, Button } from "semantic-ui-react";
 import {  DiagnosisSelection, TextField } from '../AddPatientModal/FormField';
 import { useStateValue } from '../state';
 import { EntryTypeNames, FlattenedHospitalEntryFormValues, HospitalEntryFormValues } from '../types';
+import * as Yup from 'yup';
+import { todaysDate } from '../utilityFxns';
 
+const hospitalEntrySchema = Yup.object().shape({
+  description: Yup.string().min(4).required(),
+  date: Yup.date().default(() => new Date()).required(),
+  specialist: Yup.string().required().min(1, 'Specialist name is required'),
+  diagnosisCodes: Yup.array().ensure().of(Yup.string()),
+  //this takes an exact match of a word and gives this error message if not
+  type: Yup.string().matches(/\bHospital\b/,
+     "The value must be exactly -> " + EntryTypeNames.Hospital)
+     .default(() => EntryTypeNames.Hospital),
+  discharge: Yup.object().shape({
+    date: Yup.date().default(() => new Date()),
+    criteria: Yup.string()
+  })
+});
 
 interface Props {
   onSubmit: (values: HospitalEntryFormValues) => void;
@@ -15,53 +31,21 @@ interface Props {
 export const HospitalEntryForm = ({ onSubmit, onCancel }: Props) => {
   const [{ diagnoses }]  = useStateValue();
 
-  const unflattenValuesAndSubmit=(values: FlattenedHospitalEntryFormValues) => {
-    //FlattenedHospitalEntryFormValues is HospitalEntryFormValues without dischargeDate.
-    // Instead i use dischargeDate and criteria and reformulate HospitalEntryFormValues for submission
-    onSubmit ({...values, discharge: {date: values.dischargeDate, criteria: values.criteria }});
-  };
-
   return (
     <Formik
       initialValues={{
         description: "",
-        date: "",
+        date: todaysDate,
         specialist: "",
         diagnosisCodes: [],
         type : EntryTypeNames.Hospital,
-        dischargeDate: "",
-        criteria: ""
-
+        discharge: {
+          date: todaysDate,
+          criteria: ""
+        }
       }}
-      onSubmit={unflattenValuesAndSubmit}
-      validate={(values) => {
-        const requiredError = "Field is required";
-        const errors: { [field: string]: string } = {};
-
-        if (!values.date) {
-          errors.date = requiredError;
-        }
-        if (!values.description) {
-          errors.description = requiredError;
-        }
-        if (!values.specialist) {
-          errors.specialist = requiredError;
-        }
-        if (!values.type) {
-          errors.type = requiredError;
-        }
-        if (values.type !== EntryTypeNames.Hospital) {
-          errors.type = "value should be " + EntryTypeNames.Hospital;
-        }
-        if (!values.criteria) {
-          errors.criteria = requiredError;
-        }
-        if (!values.dischargeDate) {
-          errors.dischargeDate = requiredError;
-        }
-
-        return errors;
-      }}
+      onSubmit={onSubmit}
+      validationSchema={hospitalEntrySchema}
     >
       {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
         return (
@@ -88,14 +72,14 @@ export const HospitalEntryForm = ({ onSubmit, onCancel }: Props) => {
             <Field
               label="Discharge date"
               placeholder="YYYY-MM-DD"
-              name="dischargeDate"
+              name="discharge.date"
               component={TextField}
             />
             
             <Field
               label="Discharge reason"
               placeholder="Thumb has healed"
-              name="criteria"
+              name="discharge.criteria"
               component={TextField}
             />
 
