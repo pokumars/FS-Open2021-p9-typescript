@@ -10,7 +10,7 @@ interface Props {
 
 export const OccupationalHealthEntryComponent = ({ entry, diagnosisDetails }: Props) => {
 
-  console.log('diagnosisDetails----', diagnosisDetails);
+  //console.log('diagnosisDetails----', diagnosisDetails);
   return (
     <Card fluid  >
       <Card.Content>

@@ -10,7 +10,7 @@ interface Props {
 
 export const HealthCheckEntryComponent = ({entry, diagnosisDetails}: Props) => {
 
-  console.log('diagnosisDetails----', diagnosisDetails);
+  //console.log('diagnosisDetails----', diagnosisDetails);
 
   return (
     <Card fluid  >

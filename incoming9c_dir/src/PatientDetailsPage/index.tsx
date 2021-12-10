@@ -35,7 +35,7 @@ const PatientDetailsPage = () => {
       try {
         const response = await axios.get<Patient>(apiBaseUrl + '/patients/' + id);
         const patient = response.data;
-        console.log(patient);
+        //console.log('patient',patient);
         //put patient in state
         dispatch(addToPatientInfoList(patient));
 
@@ -73,7 +73,7 @@ const PatientDetailsPage = () => {
   }, [dispatch]);
 
   const submitNewEntry = async (values: EntryFormValues): Promise<void> => {
-    console.log('values in submitNewEntry ', values);
+    //console.log('values in submitNewEntry ', values);
     try {
       const {data: updatedPatient} = await axios.post<Patient>(
         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions

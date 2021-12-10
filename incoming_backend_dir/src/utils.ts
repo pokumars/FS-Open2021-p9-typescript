@@ -25,7 +25,7 @@ const toNewPatient = (object: any): NewPatient => {
 };
 
 const toNewEntry = (object: EntryWithoutId): EntryWithoutId => {
-  console.log(`toNewEntry switch case object.type ${object.type}`);
+  //console.log(`toNewEntry switch case object.type ${object.type}`);
   switch (object.type) {
     case "HealthCheck":
       

@@ -31,13 +31,13 @@ const App = () => {
   
   React.useEffect(() => {
     //check state for Diagnoses
-    console.log('fetching the diagnoses');
+    //console.log('fetching the diagnoses');
     //fetch the Diagnoses
     const fetchDiagnoses = async () => {
       try {
         const response = await axios.get<Diagnosis[]>(apiBaseUrl + '/diagnoses/');
         const fetchedDiagnoses = response.data;
-        console.log(fetchedDiagnoses);
+        //console.log('fetchedDiagnoses', fetchedDiagnoses);
         //put Diagnoses in state
         dispatch(addToDiagnoses(fetchedDiagnoses));
 
