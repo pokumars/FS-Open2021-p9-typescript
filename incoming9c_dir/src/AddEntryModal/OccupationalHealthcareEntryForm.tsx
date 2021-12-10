@@ -19,7 +19,18 @@ const occupationalHealthcareEntrySchema = Yup.object().shape({
      .default(() => EntryTypeNames.OccupationalHealthcare),
   employerName: Yup.string().required('Employer name is required'),
   sickLeave: Yup.object().shape({
-    startDate: Yup.date().default(() => new Date()),
+    startDate: Yup.date()
+      /* make it so that the start date cannot be later than the end date and vice versa*/
+      .when('endDate', (endDate: string) => {
+        /*test this again at a different time. the error msg kept being given in the desired date minus one day so I had to manually add one day.*/
+        const date: Date =  new Date(endDate);
+        const datePlusOne: Date = new Date(date.setDate(date.getDate() + 1));
+        return endDate
+        ? Yup.date().max(endDate, `Date must be earlier than or equal to end date which is ${datePlusOne.toJSON().split("T")[0]}`)
+        : Yup.date().default(() => new Date());
+      }),
+      /*I cant have the same when clause in startDate also here in endDate. Otherwise it becomes a 
+      cyclic dependency since they both refer to each other. One is enough for the jon*/
     endDate: Yup.date().default(() => new Date())
   })
 });
