@@ -10,7 +10,7 @@
     "dev": "ts-node-dev src/index.ts",
     "build:ui": "rm -rf build && cd ../incoming9c_dir/ && git pull && npm install && npm run build --prod && cp -r build ../incoming_backend_dir/",
     "deploy": "cd .. && git subtree push --prefix incoming_backend_dir/ heroku main",
-    "deploy:full": "npm run build:ui && npm run tsc && git add . && git commit -m uibuild && npm run deploy",
+    "deploy:full": "npm run build:ui && npm run tsc && git add . && git commit -m uibuild && git push && npm run deploy",
     "logs:prod": "heroku logs --tail",
     "lint": "eslint --ext .ts ."
   },
