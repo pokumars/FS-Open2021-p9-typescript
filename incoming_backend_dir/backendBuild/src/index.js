@@ -8,6 +8,7 @@ const cors_1 = __importDefault(require("cors"));
 const diagnoses_1 = __importDefault(require("./routers/diagnoses"));
 const patients_1 = __importDefault(require("./routers/patients"));
 const morgan_1 = __importDefault(require("morgan"));
+const config_1 = __importDefault(require("./config"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use((0, morgan_1.default)('tiny'));
@@ -19,7 +20,6 @@ app.get('/ping', (_req, res) => {
     console.log('someone pinged here');
     res.send('Patientor backend pongs back');
 });
-const PORT = 3001;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+app.listen(config_1.default.PORT, () => {
+    console.log(`Server running on port ${config_1.default.PORT}`);
 });
