@@ -30,6 +30,8 @@
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
+    //for VS code "./dir_name/tsconfig.json" works and for react "./tsconfig.json"
+    //one errors when the other is given and vice versa
     "project": "./tsconfig.json"
   }
 }
