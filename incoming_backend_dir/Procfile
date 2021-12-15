@@ -1,1 +1,1 @@
-web: node backendBuild\src\index.js
+web: node backendBuild/src/index.js
