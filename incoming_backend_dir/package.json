@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
-    "start": "node build/index.js",
+    "start": "node backendBuild/src/index.js",
     "dev": "ts-node-dev src/index.ts",
     "build:ui": "rm -rf build && cd ../incoming9c_dir/ && git pull && npm install && npm run build --prod && cp -r build ../incoming_backend_dir/",
     "deploy": "cd .. && git subtree push --prefix incoming_backend_dir/ heroku main",
