@@ -1,1 +1,1 @@
-web: node incoming_backend_dir\src\index.ts
+web: node incoming_backend_dir\build\index.js
